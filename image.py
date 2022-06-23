@@ -21,18 +21,36 @@ class Get_Image(Excel):
 
     def draw_image(self):
         image = Image.open('Шаблон.jpg')
-        font = ImageFont.truetype("arial.ttf", 25)
+        font = ImageFont.truetype("arial.ttf", 20)
         drawer = ImageDraw.Draw(image)
         drawer.text((self.coordinate_x, self.coordinate_y), Excel.get_cell_value(self), font=font, fill='black')
         image.save('Шаблон.jpg')
-        image.show()
+
+
+def draw_sum(file_name, coordinate_x, coordinate_y, *args):
+    wb = load_workbook(filename=file_name, read_only=True)
+    ws = wb['OD матрица']
+    count = 0
+    for i in args:
+     value = int(ws[i].value)
+     count += value
+    image = Image.open('Шаблон.jpg')
+    font = ImageFont.truetype("arial.ttf", 20)
+    drawer = ImageDraw.Draw(image)
+    drawer.text((coordinate_x, coordinate_y), str(count), font=font, fill='#404040')
+    image.save('Шаблон.jpg')
+
+
         
 
 Value1 = Get_Image('2.xlsx', 'B4', 1118, 309)
 Value1.draw_image()
 
-Value2 = Get_Image('2.xlsx', 'B5', 500, 309)
-Value2.draw_image()
+draw_sum('Таблица со значениями.xlsx', 815, 81, 'C4', 'C6', 'C5')
 
-Value3 = Get_Image('2.xlsx', 'E6', 1118, 900)
-Value3.draw_image()
+
+
+    
+
+
+
